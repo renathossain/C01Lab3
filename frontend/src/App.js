@@ -12,7 +12,6 @@ function App() {
   // -- Dialog props-- 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogNote, setDialogNote] = useState(null)
-
   
   // -- Database interaction functions --
   useEffect(() => {
@@ -38,8 +37,16 @@ function App() {
     getNotes()
   }, [])
 
-  const deleteNote = (entry) => {
+  const deleteNote = async (entry) => {
     // Code for DELETE here
+    try {
+      await fetch(`http://localhost:4000/deleteNote/${entry._id}`, {
+        method: "DELETE",
+      });
+      deleteNoteState(entry._id);
+    } catch (error) {
+      console.log("Delete note failed:", error);
+    }
   }
 
   const deleteAllNotes = () => {
@@ -72,16 +79,23 @@ function App() {
     setNotes((prevNotes) => [...prevNotes, {_id, title, content}])
   }
 
-  const deleteNoteState = () => {
+  const deleteNoteState = (_id) => {
     // Code for modifying state after DELETE here
+    setNotes((prevNotes) => prevNotes.filter((note) => note._id !== _id));
   }
 
   const deleteAllNotesState = () => {
     // Code for modifying state after DELETE all here
+    setNotes([]);
   }
 
   const patchNoteState = (_id, title, content) => {
     // Code for modifying state after PATCH here
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note._id === _id ? { ...note, title, content } : note
+      )
+    );
   }
 
   return (
