@@ -1,11 +1,9 @@
-# C01Lab3 
-
 Implemented frontend and backend for a note-taking app. Functionalities added:
 - deleteNote
 - patchNote
 - deleteAllNotes
 
-# Terminal 1 - Start MongoDB Server
+## Terminal 1 - Start MongoDB Server
 
 ```bash
 cd backend
