@@ -1,6 +1,6 @@
 # C01Lab3 
 
-Implemented front end and backend for a note-taking app. Functionalities added:
+Implemented frontend and backend for a note-taking app. Functionalities added:
 - deleteNote
 - patchNote
 - deleteAllNotes
