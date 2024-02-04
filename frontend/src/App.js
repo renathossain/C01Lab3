@@ -42,10 +42,17 @@ function App() {
     try {
       await fetch(`http://localhost:4000/deleteNote/${entry._id}`, {
         method: "DELETE",
+      }).then(async (response) => {
+        if (!response.ok) {
+          console.log("Served failed:", response.status);
+          alert("Delete failed. Please try again later.");
+        } else {
+          deleteNoteState(entry._id);
+        }
       });
-      deleteNoteState(entry._id);
     } catch (error) {
       console.log("Delete note failed:", error);
+      alert("Delete failed. Please try again later.");
     }
   }
 
@@ -54,10 +61,17 @@ function App() {
     try {
       await fetch("http://localhost:4000/deleteAllNotes", {
         method: "DELETE",
+      }).then(async (response) => {
+        if (!response.ok) {
+          console.log("Served failed:", response.status);
+          alert("Delete all notes failed. Please try again later.");
+        } else {
+          deleteAllNotesState();
+        }
       });
-      deleteAllNotesState();
     } catch (error) {
       console.log("Delete all notes failed:", error);
+      alert("Delete all notes failed. Please try again later.");
     }
   }
 

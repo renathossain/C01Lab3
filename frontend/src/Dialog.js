@@ -50,7 +50,6 @@ function Dialog({
                     await response.json().then((data) => {
                         postNoteState(data.insertedId, note.title, note.content)
                         setStatus("Note posted!")
-                        close()
                     }) 
                 }
             })
@@ -79,7 +78,6 @@ function Dialog({
                 } else {
                     patchNoteState(note._id, note.title, note.content);
                     setStatus("Note modified!")
-                    close()
                 }
             });
             
