@@ -49,8 +49,16 @@ function App() {
     }
   }
 
-  const deleteAllNotes = () => {
+  const deleteAllNotes = async () => {
     // Code for DELETE all notes here
+    try {
+      await fetch("http://localhost:4000/deleteAllNotes", {
+        method: "DELETE",
+      });
+      deleteAllNotesState();
+    } catch (error) {
+      console.log("Delete all notes failed:", error);
+    }
   }
 
   
@@ -144,7 +152,7 @@ function App() {
           initialNote={dialogNote}
           closeDialog={closeDialog}
           postNote={postNoteState}
-          // patchNote={patchNoteState}
+          patchNote={patchNoteState}
           />
 
       </header>

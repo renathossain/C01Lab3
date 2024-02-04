@@ -126,7 +126,6 @@ app.patch("/patchNote/:noteId", express.json(), async (req, res) => {
     // Find note with given ID
     const collection = db.collection(COLLECTIONS.notes);
     const data = await collection.updateOne({
-      username: decoded.username,
       _id: new ObjectId(noteId),
     }, {
       $set: {
@@ -145,3 +144,21 @@ app.patch("/patchNote/:noteId", express.json(), async (req, res) => {
     res.status(500).json({error: error.message})
   }
 })
+
+// Delete a note
+app.delete("/deleteAllNotes", async (_, res) => {
+  try {
+    const collection = db.collection(COLLECTIONS.notes);
+    const data = await collection.deleteMany({});
+
+    if (data.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ error: "Unable to delete all notes." });
+    }
+
+    res.json({ response: `All notes were deleted.` });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});

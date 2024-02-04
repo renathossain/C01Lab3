@@ -3,7 +3,13 @@ import './App.css';
 
 const baseNote = {title: "", content: ""}
 
-function Dialog({open, initialNote, closeDialog, postNote: postNoteState}) {
+function Dialog({
+    open,
+    initialNote,
+    closeDialog,
+    postNote: postNoteState,
+    patchNote: patchNoteState
+}) {
 
     // -- Dialog props --
     const [note, setNote] = useState(baseNote)
@@ -43,7 +49,7 @@ function Dialog({open, initialNote, closeDialog, postNote: postNoteState}) {
                 } else {
                     await response.json().then((data) => {
                         postNoteState(data.insertedId, note.title, note.content)
-                        //setStatus("Note posted!") // Can be replaced with close(), if you want!
+                        setStatus("Note posted!")
                         close()
                     }) 
                 }
@@ -54,8 +60,32 @@ function Dialog({open, initialNote, closeDialog, postNote: postNoteState}) {
         } 
     }
 
-    const patchNote = (entry) => {
+    const patchNote = async () => {
         // Code for PATCH here
+        try {
+            await fetch(`http://localhost:4000/patchNote/${note._id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    title: note.title,
+                    content: note.content
+                }),
+            }).then(async (response) => {
+                if (!response.ok) {
+                    setStatus(`Error trying to edit note`)
+                    console.log("Patch note failed:", response.status);
+                } else {
+                    patchNoteState(note._id, note.title, note.content);
+                    setStatus("Note modified!")
+                    close()
+                }
+            });
+            
+        } catch (error) {
+            console.log("Patch note failed:", error);
+        }
     }
 
     return (
